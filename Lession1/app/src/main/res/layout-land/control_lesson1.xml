@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main3">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewLayoutType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#dddddd"
+            android:gravity="left"
+            android:padding="5dp"
+            android:text="Layout Type" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="169dp"
+            android:scaleType="fitCenter"
+            android:src="@android:mipmap/sym_def_app_icon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewOrganisation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Organisation:"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageViewPhone"
+                    android:layout_width="22dp"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_call" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewNameValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tony Stark" />
+
+                <TextView
+                    android:id="@+id/textViewOrganisationValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mirea" />
+
+                <TextView
+                    android:id="@+id/textViewPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+7 (911) 111-11-11" />
+
+                <TextView
+                    android:id="@+id/textViewPhoneType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(Mobile)"
+                    android:textSize="25px" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:backgroundTint="#dddddd"
+            android:text="Save"
+            android:textColor="#000000" />
+
+
+    </LinearLayout>
+</TableLayout>
