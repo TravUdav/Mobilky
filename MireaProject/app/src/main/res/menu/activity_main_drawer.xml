@@ -25,5 +25,20 @@
             android:id="@+id/webViewFragment"
             android:icon="@drawable/ic_menu_web_view"
             android:title="Web View Fragment" />
+
+        <item
+            android:id="@+id/sensorDataFragment"
+            android:icon="@drawable/sensor"
+            android:title="Sensor Data Fragment" />
+
+        <item
+            android:id="@+id/cameraFragment"
+            android:icon="@drawable/camera"
+            android:title="Camera Fragment" />
+
+        <item
+            android:id="@+id/audioFragment"
+            android:icon="@drawable/dictaphone_image"
+            android:title="Audio Fragment" />
     </group>
 </menu>

@@ -34,4 +34,22 @@
         android:name="ru.mirea.andreevapk.mireaproject.WebViewFragment"
         android:label="Web View Fragment"
         tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/sensorDataFragment"
+        android:name="ru.mirea.andreevapk.mireaproject.SensorDataFragment"
+        android:label="Sensor Data Fragment"
+        tools:layout="@layout/fragment_sensor_data" />
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="ru.mirea.andreevapk.mireaproject.CameraFragment"
+        android:label="Camera Fragment"
+        tools:layout="@layout/fragment_camera" />
+
+    <fragment
+        android:id="@+id/audioFragment"
+        android:name="ru.mirea.andreevapk.mireaproject.AudioFragment"
+        android:label="Audio Fragment"
+        tools:layout="@layout/fragment_audio" />
 </navigation>

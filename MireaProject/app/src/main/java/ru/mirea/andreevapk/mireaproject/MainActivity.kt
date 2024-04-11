@@ -11,6 +11,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import ru.mirea.andreevapk.mireaproject.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val workRequest = OneTimeWorkRequest.Builder(Worker::class.java).build()
+        WorkManager.getInstance(this).enqueue(workRequest)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.webViewFragment,
-                R.id.dataFragment
+                R.id.dataFragment, R.id.sensorDataFragment, R.id.cameraFragment, R.id.audioFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
