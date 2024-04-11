@@ -7,13 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <Button
+        android:id="@+id/buttonRec"
+        android:layout_width="165dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="500dp"
+        android:text="Начать запись. №1, группа БСБО-11-21"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Воспроизвести"
+        app:layout_constraintBaseline_toBaselineOf="@id/buttonRec"
+        app:layout_constraintStart_toEndOf="@id/buttonRec" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

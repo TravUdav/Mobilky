@@ -1,20 +1,35 @@
 package ru.mirea.andreevapk.data_thread
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import ru.mirea.andreevapk.data_thread.databinding.ActivityMainBinding
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val runn1 = Runnable { binding.textView.text = "runn1 runOnUiThread" }
+        val runn2 = Runnable { binding.textView.text = "runn2 post" }
+        val runn3 = Runnable { binding.textView.text = "runn3 postDelayed" }
+
+        val t = Thread {
+            try {
+                TimeUnit.SECONDS.sleep(2)
+                runOnUiThread(runn1)
+                TimeUnit.SECONDS.sleep(1)
+                binding.textView.postDelayed(runn3, 2000)
+                binding.textView.post(runn2)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
         }
+        t.start()
     }
 }
