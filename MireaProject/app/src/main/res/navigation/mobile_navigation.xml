@@ -52,4 +52,16 @@
         android:name="ru.mirea.andreevapk.mireaproject.AudioFragment"
         android:label="Audio Fragment"
         tools:layout="@layout/fragment_audio" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ru.mirea.andreevapk.mireaproject.ProfileFragment"
+        android:label="Profile Fragment"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/fileHandlingFragment"
+        android:name="ru.mirea.andreevapk.mireaproject.FileHandlingFragment"
+        android:label="File Handling Fragment"
+        tools:layout="@layout/fragment_file_handling" />
 </navigation>

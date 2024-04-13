@@ -40,5 +40,15 @@
             android:id="@+id/audioFragment"
             android:icon="@drawable/dictaphone_image"
             android:title="Audio Fragment" />
+
+        <item
+            android:id="@+id/profileFragment"
+            android:icon="@drawable/profile"
+            android:title="Profile Fragment" />
+
+        <item
+            android:id="@+id/fileHandlingFragment"
+            android:icon="@drawable/crypto"
+            android:title="File Handling Fragment" />
     </group>
 </menu>
