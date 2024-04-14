@@ -64,4 +64,10 @@
         android:name="ru.mirea.andreevapk.mireaproject.FileHandlingFragment"
         android:label="File Handling Fragment"
         tools:layout="@layout/fragment_file_handling" />
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="ru.mirea.andreevapk.mireaproject.MapFragment"
+        android:label="Map Fragment"
+        tools:layout="@layout/fragment_map" />
 </navigation>

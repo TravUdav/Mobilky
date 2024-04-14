@@ -50,5 +50,10 @@
             android:id="@+id/fileHandlingFragment"
             android:icon="@drawable/crypto"
             android:title="File Handling Fragment" />
+
+        <item
+            android:id="@+id/mapFragment"
+            android:icon="@drawable/map"
+            android:title="Map Fragment" />
     </group>
 </menu>
