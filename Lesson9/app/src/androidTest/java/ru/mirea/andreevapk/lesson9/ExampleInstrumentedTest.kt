@@ -1,4 +1,4 @@
-package ru.mirea.andreevapk.Lesson9
+package ru.mirea.andreevapk.lesson9
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

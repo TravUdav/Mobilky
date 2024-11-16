@@ -1,4 +1,4 @@
-package ru.mirea.andreevapk.Lesson9.ui.theme
+package ru.mirea.andreevapk.lesson9.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

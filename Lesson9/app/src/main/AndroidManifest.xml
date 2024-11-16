@@ -13,9 +13,8 @@
         android:theme="@style/Theme.MovieProject"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="ru.mirea.andreevapk.lesson9.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.MovieProject">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,5 @@
-package ru.mirea.andreevapk.Lesson9.ui.theme
+package ru.mirea.andreevapk.lesson9.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

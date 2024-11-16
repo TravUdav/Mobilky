@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "ru.mirea.andreevapk.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

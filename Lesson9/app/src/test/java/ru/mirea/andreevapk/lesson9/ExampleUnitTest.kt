@@ -1,4 +1,4 @@
-package ru.mirea.andreevapk.Lesson9
+package ru.mirea.andreevapk.lesson9
 
 import org.junit.Test
 
