@@ -28,7 +28,6 @@ import ru.mirea.andreevapk.lesson9.ui.mock.MockMainViewModel
 
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
-    // Observe LiveData from the ViewModel
     val favoriteMovie by viewModel.favoriteMovie.observeAsState("Нет данных!")
     val movieInput = remember { mutableStateOf("") }
 
@@ -41,15 +40,13 @@ fun MainScreen(viewModel: MainViewModel) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.padding(16.dp)
         ) {
-            // Display the current favorite movie
             Text(
                 text = favoriteMovie,
                 fontSize = 20.sp,
             )
 
-            // Button to fetch the movie
             Button(onClick = {
-                viewModel.getMovie() // Trigger fetching the movie from the repository
+                viewModel.getMovie()
             }) {
                 Text(
                     text = "Отобразить любимый фильм",
@@ -58,7 +55,6 @@ fun MainScreen(viewModel: MainViewModel) {
                 )
             }
 
-            // Input field for the movie name
             UnderlinedTextField(
                 value = movieInput.value,
                 onValueChange = { movieInput.value = it },
@@ -66,9 +62,8 @@ fun MainScreen(viewModel: MainViewModel) {
                     .padding(horizontal = 16.dp)
             )
 
-            // Button to save the movie
             Button(onClick = {
-                viewModel.saveMovie(Movie(2, movieInput.value)) // Save the movie to the repository
+                viewModel.saveMovie(Movie(2, movieInput.value))
             }) {
                 Text(
                     text = "Сохранить любимый фильм",
@@ -94,8 +89,8 @@ fun UnderlinedTextField(
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Blue, // Underline color when focused
-            unfocusedIndicatorColor = Color.Gray // Underline color when not focused
+            focusedIndicatorColor = Color.Blue, 
+            unfocusedIndicatorColor = Color.Gray
         )
     )
 }
