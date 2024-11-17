@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import ru.mirea.andreevapk.domain.model.User
 import ru.mirea.andreevapk.domain.usecase.GetUserUseCase
+import ru.mirea.andreevapk.domain.usecase.LoginByEmailUseCase
 import ru.mirea.andreevapk.domain.usecase.LogoutUserUseCase
 import ru.mirea.andreevapk.domain.usecase.SetUserNameUseCase
 
@@ -32,6 +33,7 @@ import ru.mirea.andreevapk.domain.usecase.SetUserNameUseCase
 fun UserProfileScreen(
     getUserUseCase: GetUserUseCase,
     setUserNameUseCase: SetUserNameUseCase,
+    loginByEmailUseCase: LoginByEmailUseCase,
     logoutUserUseCase: LogoutUserUseCase
 ) {
     var user by remember { mutableStateOf<User?>(null) }

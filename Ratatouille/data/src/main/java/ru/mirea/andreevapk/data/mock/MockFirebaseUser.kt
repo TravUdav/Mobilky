@@ -15,4 +15,9 @@ class MockFirebaseAuth {
         currentUser?.displayName = newName
         return true
     }
+
+    fun signIn(email: String, password: String): Boolean {
+        //todo smth
+        return true
+    }
 }

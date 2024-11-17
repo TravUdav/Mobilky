@@ -18,6 +18,10 @@ class UserRepositoryImpl(private val mockAuth: MockFirebaseAuth) : UserRepositor
         }
     }
 
+    override fun loginUser(email: String, password: String): Boolean {
+        return mockAuth.signIn(email, password)
+    }
+
     override fun logoutUser() {
         mockAuth.signOut()
     }

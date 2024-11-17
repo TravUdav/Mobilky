@@ -22,17 +22,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.mirea.andreevapk.domain.model.Dish
-import ru.mirea.andreevapk.domain.usecase.AddDishUseCase
+import ru.mirea.andreevapk.domain.usecase.AddFavDishUseCase
 import ru.mirea.andreevapk.domain.usecase.GetFavDishListUseCase
-import ru.mirea.andreevapk.domain.usecase.RemoveDishByIdUseCase
+import ru.mirea.andreevapk.domain.usecase.RemoveFavDishByIdUseCase
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavDishScreen(
     getFavDishListUseCase: GetFavDishListUseCase,
-    addDishUseCase: AddDishUseCase,
-    removeDishByIdUseCase: RemoveDishByIdUseCase
+    addFavDishUseCase: AddFavDishUseCase,
+    removeFavDishByIdUseCase: RemoveFavDishByIdUseCase
 ) {
     // State to manage the list of dishes
     var dishList by remember { mutableStateOf(getFavDishListUseCase.execute()) }
@@ -69,7 +69,7 @@ fun FavDishScreen(
                     ) {
                         Text(text = "${dish.name}: ${dish.recipe}")
                         Button(onClick = {
-                            feedbackMessage = removeDishByIdUseCase.execute(dish.id)
+                            feedbackMessage = removeFavDishByIdUseCase.execute(dish.id)
                             dishList = getFavDishListUseCase.execute()
                         }) {
                             Text("Remove")
@@ -100,7 +100,7 @@ fun FavDishScreen(
                                 name = newDishName,
                                 recipe = newDishRecipe
                             )
-                            addDishUseCase.execute(newDish)
+                            addFavDishUseCase.execute(newDish)
                             dishList = getFavDishListUseCase.execute()
                             feedbackMessage = "Dish added successfully!"
                             newDishName = ""

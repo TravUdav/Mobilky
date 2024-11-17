@@ -36,13 +36,14 @@ import ru.mirea.andreevapk.data.mock.MockDishRepositoryImpl
 import ru.mirea.andreevapk.data.mock.MockFavDishRepositoryImpl
 import ru.mirea.andreevapk.data.mock.MockFirebaseAuth
 import ru.mirea.andreevapk.data.repository.UserRepositoryImpl
-import ru.mirea.andreevapk.domain.usecase.AddDishUseCase
+import ru.mirea.andreevapk.domain.usecase.AddFavDishUseCase
 import ru.mirea.andreevapk.domain.usecase.GetDishListUseCase
 import ru.mirea.andreevapk.domain.usecase.GetFavDishListUseCase
 import ru.mirea.andreevapk.domain.usecase.GetRecommendDishListUseCase
 import ru.mirea.andreevapk.domain.usecase.GetUserUseCase
+import ru.mirea.andreevapk.domain.usecase.LoginByEmailUseCase
 import ru.mirea.andreevapk.domain.usecase.LogoutUserUseCase
-import ru.mirea.andreevapk.domain.usecase.RemoveDishByIdUseCase
+import ru.mirea.andreevapk.domain.usecase.RemoveFavDishByIdUseCase
 import ru.mirea.andreevapk.domain.usecase.SetUserNameUseCase
 import ru.mirea.andreevapk.domain.usecase.UploadDishToDetectUseCase
 import ru.mirea.andreevapk.ratatouille.ui.DishListScreen
@@ -53,16 +54,19 @@ import ru.mirea.andreevapk.ratatouille.ui.UserProfileScreen
 import ru.mirea.andreevapk.ratatouille.ui.theme.RatatouilleTheme
 
 val mockAuth = MockFirebaseAuth()
+
 val userRepository = UserRepositoryImpl(mockAuth)
 val favDishRepository = MockFavDishRepositoryImpl()
 val dishRepository = MockDishRepositoryImpl()
+
 val getDishListUseCase = GetDishListUseCase(dishRepository)
 val getUserUseCase = GetUserUseCase(userRepository)
 val setUserNameUseCase = SetUserNameUseCase(userRepository)
 val logoutUserUseCase = LogoutUserUseCase(userRepository)
+val loginByEmailUseCase = LoginByEmailUseCase(userRepository)
 val getFavDishListUseCase = GetFavDishListUseCase(favDishRepository)
-val addDishUseCase = AddDishUseCase(favDishRepository)
-val removeDishByIdUseCase = RemoveDishByIdUseCase(favDishRepository)
+val addFavDishUseCase = AddFavDishUseCase(favDishRepository)
+val removeFavDishByIdUseCase = RemoveFavDishByIdUseCase(favDishRepository)
 val getRecommendDishListUseCase = GetRecommendDishListUseCase(dishRepository)
 val uploadDishToDetectUseCase = UploadDishToDetectUseCase(dishRepository)
 
@@ -124,14 +128,15 @@ class MainActivity : ComponentActivity() {
                                         UserProfileScreen(
                                             getUserUseCase = getUserUseCase,
                                             setUserNameUseCase = setUserNameUseCase,
-                                            logoutUserUseCase = logoutUserUseCase
+                                            logoutUserUseCase = logoutUserUseCase,
+                                            loginByEmailUseCase = loginByEmailUseCase
                                         )
                                     }
                                     composable(Screen.FavDishScreen.route) {
                                         FavDishScreen(
                                             getFavDishListUseCase = getFavDishListUseCase,
-                                            addDishUseCase = addDishUseCase,
-                                            removeDishByIdUseCase = removeDishByIdUseCase
+                                            addFavDishUseCase = addFavDishUseCase,
+                                            removeFavDishByIdUseCase = removeFavDishByIdUseCase
                                         )
                                     }
                                     composable(Screen.RecommendationsScreen.route) {
