@@ -59,9 +59,9 @@ fun FirebaseUserManagementScreen(
 
     val onLogin: () -> Unit = {
         lifecycleScope.launch {
-            user = getUserUseCase.execute() // Update user
-            isSignedIn = user?.id != GUEST_ID // Update isSignedIn
-            userName = user?.name ?: "" // Update userName
+            user = getUserUseCase.execute()
+            isSignedIn = user?.id != GUEST_ID
+            userName = user?.name ?: ""
         }
     }
 

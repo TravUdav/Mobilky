@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -23,6 +24,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -33,13 +35,23 @@ android {
 }
 
 dependencies {
-
+    // Domain layer dependency
     implementation(project(":domain"))
 
+    // Core AndroidX libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
+    // Firebase Auth
     implementation(libs.firebase.auth.ktx)
+
+    // Room dependencies
+    implementation(libs.androidx.room.runtime)  // Room runtime
+    implementation(libs.androidx.room.ktx)      // Kotlin extensions for Room
+    ksp(libs.androidx.room.compiler)            // Use KSP for annotation processing
+
+    // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
