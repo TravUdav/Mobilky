@@ -1,5 +1,6 @@
 package ru.mirea.andreevapk.ratatouille
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,36 +36,23 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import ru.mirea.andreevapk.data.mock.MockDishRepositoryImpl
 import ru.mirea.andreevapk.data.mock.MockFavDishRepositoryImpl
-import ru.mirea.andreevapk.data.mock.MockFirebaseAuth
-import ru.mirea.andreevapk.data.repository.UserRepositoryImpl
 import ru.mirea.andreevapk.domain.usecase.AddFavDishUseCase
 import ru.mirea.andreevapk.domain.usecase.GetDishListUseCase
 import ru.mirea.andreevapk.domain.usecase.GetFavDishListUseCase
 import ru.mirea.andreevapk.domain.usecase.GetRecommendDishListUseCase
-import ru.mirea.andreevapk.domain.usecase.GetUserUseCase
-import ru.mirea.andreevapk.domain.usecase.LoginByEmailUseCase
-import ru.mirea.andreevapk.domain.usecase.LogoutUserUseCase
 import ru.mirea.andreevapk.domain.usecase.RemoveFavDishByIdUseCase
-import ru.mirea.andreevapk.domain.usecase.SetUserNameUseCase
 import ru.mirea.andreevapk.domain.usecase.UploadDishToDetectUseCase
 import ru.mirea.andreevapk.ratatouille.ui.DishListScreen
 import ru.mirea.andreevapk.ratatouille.ui.FavDishScreen
 import ru.mirea.andreevapk.ratatouille.ui.RecommendationsScreen
 import ru.mirea.andreevapk.ratatouille.ui.UploadImageToDetectScreen
-import ru.mirea.andreevapk.ratatouille.ui.UserProfileScreen
 import ru.mirea.andreevapk.ratatouille.ui.theme.RatatouilleTheme
 
-val mockAuth = MockFirebaseAuth()
 
-val userRepository = UserRepositoryImpl(mockAuth)
 val favDishRepository = MockFavDishRepositoryImpl()
 val dishRepository = MockDishRepositoryImpl()
 
 val getDishListUseCase = GetDishListUseCase(dishRepository)
-val getUserUseCase = GetUserUseCase(userRepository)
-val setUserNameUseCase = SetUserNameUseCase(userRepository)
-val logoutUserUseCase = LogoutUserUseCase(userRepository)
-val loginByEmailUseCase = LoginByEmailUseCase(userRepository)
 val getFavDishListUseCase = GetFavDishListUseCase(favDishRepository)
 val addFavDishUseCase = AddFavDishUseCase(favDishRepository)
 val removeFavDishByIdUseCase = RemoveFavDishByIdUseCase(favDishRepository)
@@ -71,25 +60,22 @@ val getRecommendDishListUseCase = GetRecommendDishListUseCase(dishRepository)
 val uploadDishToDetectUseCase = UploadDishToDetectUseCase(dishRepository)
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setMainContent()
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    private fun setMainContent() {
         setContent {
             RatatouilleTheme {
-                // Setup Navigation
                 val navController = rememberNavController()
-
-                // Create a state for controlling the drawer
                 val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-                // Get a coroutine scope
                 val coroutineScope = rememberCoroutineScope()
 
-                // ModalNavigationDrawer for Material3
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
-                        // Pass drawerState to the DrawerContent so that we can close it on item click
                         DrawerContent(navController, drawerState)
                     },
                     content = {
@@ -98,9 +84,7 @@ class MainActivity : ComponentActivity() {
                                 TopAppBar(
                                     title = { Text("Your App") },
                                     navigationIcon = {
-                                        // Add the hamburger icon to open the drawer
                                         IconButton(onClick = {
-                                            // Toggle the drawer state when the hamburger icon is clicked
                                             coroutineScope.launch {
                                                 drawerState.open()
                                             }
@@ -116,7 +100,7 @@ class MainActivity : ComponentActivity() {
                             content = { paddingValues ->
                                 NavHost(
                                     navController = navController,
-                                    startDestination = Screen.DishListScreen.route, // DishListScreen is the root screen
+                                    startDestination = Screen.DishListScreen.route,
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .padding(paddingValues)
@@ -125,12 +109,12 @@ class MainActivity : ComponentActivity() {
                                         DishListScreen(getDishListUseCase = getDishListUseCase)
                                     }
                                     composable(Screen.UserProfileScreen.route) {
-                                        UserProfileScreen(
-                                            getUserUseCase = getUserUseCase,
-                                            setUserNameUseCase = setUserNameUseCase,
-                                            logoutUserUseCase = logoutUserUseCase,
-                                            loginByEmailUseCase = loginByEmailUseCase
-                                        )
+                                        val context = LocalContext.current
+                                        LaunchedEffect(Unit) {
+                                            val intent = Intent(context, AuthActivity::class.java)
+                                            context.startActivity(intent)
+                                            finish()
+                                        }
                                     }
                                     composable(Screen.FavDishScreen.route) {
                                         FavDishScreen(
@@ -159,14 +143,10 @@ class MainActivity : ComponentActivity() {
 fun DrawerContent(navController: NavHostController, drawerState: DrawerState) {
     var navigateTo by remember { mutableStateOf<String?>(null) }
 
-    // Close the drawer when navigation occurs
     LaunchedEffect(navigateTo) {
         navigateTo?.let {
-            // Perform the navigation
             navController.navigate(it)
-            // Close the drawer after navigation
             drawerState.close()
-            // Reset the navigation state
             navigateTo = null
         }
     }

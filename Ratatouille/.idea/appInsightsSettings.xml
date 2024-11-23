@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="ru.mirea.andreevapk.ratatouille" />
+                  <option name="mobileSdkAppId" value="1:843817373144:android:33075329e7ff04a6c876ad" />
+                  <option name="projectId" value="ratatouille-40d02" />
+                  <option name="projectNumber" value="843817373144" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

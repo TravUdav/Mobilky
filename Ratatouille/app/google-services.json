@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "843817373144",
+    "project_id": "ratatouille-40d02",
+    "storage_bucket": "ratatouille-40d02.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843817373144:android:33075329e7ff04a6c876ad",
+        "android_client_info": {
+          "package_name": "ru.mirea.andreevapk.ratatouille"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACwHFbiHOU2mW7nSu5mhcsikHiOVQLbtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
