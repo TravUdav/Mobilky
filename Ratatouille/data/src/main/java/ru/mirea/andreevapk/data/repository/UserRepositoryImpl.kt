@@ -1,5 +1,9 @@
 package ru.mirea.andreevapk.data.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
@@ -17,33 +21,47 @@ class UserRepositoryImpl(
     private val networkApi: NetworkApi
 ) : UserRepository {
 
-    override suspend fun getUser(): User {
-        val userId = sharedPreferencesHelper.getUserId()
-        if (userId != null) {
-            val cachedUser = userDao.getUserById(userId.hashCode())
-            if (cachedUser != null) {
-                return User(cachedUser.id, cachedUser.name)
-            }
+    private val userLiveData = MediatorLiveData<User>()
+    private val guestUser = User(id = GUEST_ID, name = GUEST_NAME)
 
-            val networkUser = networkApi.fetchUserData(userId)
-            if (networkUser.id != MOCK_API_ID) {
-                userDao.insertUser(UserEntity(networkUser.id, networkUser.name ?: "Unknown"))
-                return networkUser
+    init {
+        val localUserSource = userDao.getUserFlow().asLiveData()
+        userLiveData.addSource(localUserSource) { cachedUser ->
+            if (cachedUser != null) {
+                userLiveData.value = User(cachedUser.id, cachedUser.name)
             }
         }
 
-        val currentUser = firebaseAuth.currentUser
+        val firebaseUserSource = MutableLiveData<User>()
+        firebaseAuth.addAuthStateListener { auth ->
+            val currentUser = auth.currentUser
+            firebaseUserSource.value = if (currentUser != null) {
+                User(
+                    id = currentUser.uid.hashCode(),
+                    name = currentUser.displayName ?: GUEST_NAME
+                )
+            } else {
+                guestUser
+            }
+        }
+        userLiveData.addSource(firebaseUserSource) { firebaseUser ->
+            if (firebaseUser.id != GUEST_ID) {
+                userLiveData.value = firebaseUser
+                sharedPreferencesHelper.setUserId(firebaseUser.id.toString())
+            }
+        }
+    }
 
-        return if (currentUser != null) {
-            User(
-                id = currentUser.uid.hashCode(), // Convert string ID with hash
-                name = currentUser.displayName ?: GUEST_NAME
-            )
-        } else {
-            User(
-                id = GUEST_ID,
-                name = GUEST_NAME
-            )
+    override fun getUserLiveData(): LiveData<User> = userLiveData
+
+    override suspend fun refreshUserFromNetwork() {
+        val userId = sharedPreferencesHelper.getUserId()
+        if (userId != null) {
+            val networkUser = networkApi.fetchUserData(userId)
+            if (networkUser.id != MOCK_API_ID) {
+                userDao.insertUser(UserEntity(networkUser.id, networkUser.name ?: "Unknown"))
+                userLiveData.postValue(networkUser)
+            }
         }
     }
 
@@ -77,6 +95,7 @@ class UserRepositoryImpl(
     override fun logoutUser() {
         firebaseAuth.signOut()
         sharedPreferencesHelper.clearUserData()
+        userLiveData.value = guestUser
     }
 
     override suspend fun setName(name: String) {

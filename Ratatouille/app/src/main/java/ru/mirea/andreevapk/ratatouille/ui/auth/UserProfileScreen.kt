@@ -1,4 +1,4 @@
-package ru.mirea.andreevapk.ratatouille.ui
+package ru.mirea.andreevapk.ratatouille.ui.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,43 +31,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleCoroutineScope
-import kotlinx.coroutines.launch
 import ru.mirea.andreevapk.domain.model.GUEST_ID
+import ru.mirea.andreevapk.domain.model.GUEST_NAME
 import ru.mirea.andreevapk.domain.model.User
-import ru.mirea.andreevapk.domain.usecase.CreateUserUseCase
-import ru.mirea.andreevapk.domain.usecase.GetUserUseCase
-import ru.mirea.andreevapk.domain.usecase.LoginByEmailUseCase
-import ru.mirea.andreevapk.domain.usecase.LoginParam
-import ru.mirea.andreevapk.domain.usecase.LogoutUserUseCase
-import ru.mirea.andreevapk.domain.usecase.SetUserNameUseCase
 import ru.mirea.andreevapk.ratatouille.R
 
 @Composable
-fun FirebaseUserManagementScreen(
-    lifecycleScope: LifecycleCoroutineScope,
-    getUserUseCase: GetUserUseCase,
-    setUserNameUseCase: SetUserNameUseCase,
-    logoutUserUseCase: LogoutUserUseCase,
-    loginByEmailUseCase: LoginByEmailUseCase,
-    createUserUseCase: CreateUserUseCase
-) {
-    var user by remember { mutableStateOf<User?>(null) }
-    var isSignedIn by remember { mutableStateOf(false) }
+fun UserProfileScreen(authViewModel: AuthViewModel) {
+    val user by authViewModel.userLiveData.observeAsState(initial = User(GUEST_ID, GUEST_NAME))
+    val isSignedIn = user.id != GUEST_ID
+    var userName by remember { mutableStateOf(user.name) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var userName by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
-    val onLogin: () -> Unit = {
-        lifecycleScope.launch {
-            user = getUserUseCase.execute()
-            isSignedIn = user?.id != GUEST_ID
-            userName = user?.name ?: ""
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        onLogin()
+    LaunchedEffect(user) {
+        userName = user.name
     }
 
     Column(
@@ -97,7 +77,7 @@ fun FirebaseUserManagementScreen(
 
         if (isSignedIn) {
             OutlinedTextField(
-                value = userName,
+                value = userName ?: "",
                 onValueChange = { userName = it },
                 label = { Text("User Name") },
                 modifier = Modifier.fillMaxWidth()
@@ -105,10 +85,7 @@ fun FirebaseUserManagementScreen(
 
             Button(
                 onClick = {
-                    lifecycleScope.launch {
-                        setUserNameUseCase.execute(userName)
-                        user = user?.copy(name = userName)
-                    }
+                    authViewModel.updateUserName(userName ?: "")
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
@@ -127,25 +104,34 @@ fun FirebaseUserManagementScreen(
         ) {
             if (isSignedIn) {
                 Button(
-                    onClick = {
-                        logoutUserUseCase.execute()
-                        user = null
-                        isSignedIn = false
-                    },
+                    onClick = { authViewModel.logout() },
                     modifier = Modifier.align(Alignment.Center)
                 ) {
                     Text(text = stringResource(id = R.string.sign_out))
                 }
             } else {
                 SignInSection(
-                    lifecycleScope,
-                    email,
-                    { email = it },
-                    password,
-                    { password = it },
-                    loginByEmailUseCase,
-                    createUserUseCase,
-                    onLogin
+                    email = email,
+                    onEmailChange = { email = it },
+                    password = password,
+                    onPasswordChange = { password = it },
+                    onLogin = {
+                        isLoading = true
+                        authViewModel.login(email, password) {
+                            email = ""
+                            password = ""
+                            isLoading = false
+                        }
+                    },
+                    onCreateAccount = {
+                        isLoading = true
+                        authViewModel.createUser(email, password) {
+                            email = ""
+                            password = ""
+                            isLoading = false
+                        }
+                    },
+                    isLoading = isLoading
                 )
             }
         }
@@ -154,17 +140,14 @@ fun FirebaseUserManagementScreen(
 
 @Composable
 fun SignInSection(
-    lifecycleScope: LifecycleCoroutineScope,
     email: String,
     onEmailChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
-    loginByEmailUseCase: LoginByEmailUseCase,
-    createUserUseCase: CreateUserUseCase,
-    onLogin: () -> Unit
+    onLogin: () -> Unit,
+    onCreateAccount: () -> Unit,
+    isLoading: Boolean
 ) {
-    var isLoading by remember { mutableStateOf(false) }
-
     Row(
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.SpaceAround
@@ -180,22 +163,7 @@ fun SignInSection(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = {
-                    lifecycleScope.launch {
-                        isLoading = true
-                        try {
-                            loginByEmailUseCase.execute(
-                                LoginParam(
-                                    email = email,
-                                    password = password
-                                )
-                            )
-                            onLogin()
-                        } finally {
-                            isLoading = false
-                        }
-                    }
-                },
+                onClick = { onLogin() },
                 enabled = !isLoading,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
@@ -221,22 +189,7 @@ fun SignInSection(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = {
-                    lifecycleScope.launch {
-                        isLoading = true
-                        try {
-                            createUserUseCase.execute(
-                                LoginParam(
-                                    email = email,
-                                    password = password
-                                )
-                            )
-                            onLogin()
-                        } finally {
-                            isLoading = false
-                        }
-                    }
-                },
+                onClick = { onCreateAccount() },
                 enabled = !isLoading,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {

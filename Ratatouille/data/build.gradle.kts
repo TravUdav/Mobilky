@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.androidx.room.ktx)      // Kotlin extensions for Room
     ksp(libs.androidx.room.compiler)            // Use KSP for annotation processing
 
+    // LiveData
+    implementation(libs.androidx.lifecycle.livedata)      // Kotlin extensions for Room
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
