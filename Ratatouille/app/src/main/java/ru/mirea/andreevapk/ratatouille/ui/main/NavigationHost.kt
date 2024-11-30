@@ -12,11 +12,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ru.mirea.andreevapk.ratatouille.ui.DishListScreen
-import ru.mirea.andreevapk.ratatouille.ui.FavDishScreen
+import ru.mirea.andreevapk.ratatouille.ui.FavMealScreen
 import ru.mirea.andreevapk.ratatouille.ui.RecommendationsScreen
 import ru.mirea.andreevapk.ratatouille.ui.UploadImageToDetectScreen
 import ru.mirea.andreevapk.ratatouille.ui.auth.AuthActivity
+import ru.mirea.andreevapk.ratatouille.ui.meal.MealListScreen
 
 @Composable
 fun NavigationHost(
@@ -26,26 +26,26 @@ fun NavigationHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.DishListScreen.route,
+        startDestination = Screen.MealListScreen.route,
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
     ) {
-        composable(Screen.DishListScreen.route) {
-            DishListScreen(getDishListUseCase = mainViewModel.getDishListUseCase)
+        composable(Screen.MealListScreen.route) {
+            MealListScreen(getMealListUseCase = mainViewModel.getMealListUseCase)
         }
         composable(Screen.FavDishScreen.route) {
-            FavDishScreen(
-                getFavDishListUseCase = mainViewModel.getFavDishListUseCase,
-                addFavDishUseCase = mainViewModel.addFavDishUseCase,
-                removeFavDishByIdUseCase = mainViewModel.removeFavDishByIdUseCase
+            FavMealScreen(
+                getFavMealListUseCase = mainViewModel.getFavMealListUseCase,
+                addFavMealUseCase = mainViewModel.addFavMealUseCase,
+                removeFavMealByIdUseCase = mainViewModel.removeFavMealByIdUseCase
             )
         }
         composable(Screen.RecommendationsScreen.route) {
-            RecommendationsScreen(getRecommendDishListUseCase = mainViewModel.getRecommendDishListUseCase)
+            RecommendationsScreen(getRecommendMealListUseCase = mainViewModel.getRecommendMealListUseCase)
         }
         composable(Screen.UploadImageToDetectScreen.route) {
-            UploadImageToDetectScreen(uploadDishToDetectUseCase = mainViewModel.uploadDishToDetectUseCase)
+            UploadImageToDetectScreen(uploadMealToDetectUseCase = mainViewModel.uploadMealToDetectUseCase)
         }
         composable(Screen.UserProfileScreen.route) {
             UserProfileScreen()

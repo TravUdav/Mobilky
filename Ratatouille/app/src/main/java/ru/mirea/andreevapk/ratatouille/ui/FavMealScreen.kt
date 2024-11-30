@@ -21,28 +21,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.mirea.andreevapk.domain.model.Dish
-import ru.mirea.andreevapk.domain.usecase.AddFavDishUseCase
-import ru.mirea.andreevapk.domain.usecase.GetFavDishListUseCase
-import ru.mirea.andreevapk.domain.usecase.RemoveFavDishByIdUseCase
-import kotlin.random.Random
+import ru.mirea.andreevapk.domain.usecase.AddFavMealUseCase
+import ru.mirea.andreevapk.domain.usecase.GetFavMealListUseCase
+import ru.mirea.andreevapk.domain.usecase.RemoveFavMealByIdUseCase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavDishScreen(
-    getFavDishListUseCase: GetFavDishListUseCase,
-    addFavDishUseCase: AddFavDishUseCase,
-    removeFavDishByIdUseCase: RemoveFavDishByIdUseCase
+fun FavMealScreen(
+    getFavMealListUseCase: GetFavMealListUseCase,
+    addFavMealUseCase: AddFavMealUseCase,
+    removeFavMealByIdUseCase: RemoveFavMealByIdUseCase
 ) {
     // State to manage the list of dishes
-    var dishList by remember { mutableStateOf(getFavDishListUseCase.execute()) }
-    var newDishName by remember { mutableStateOf("") }
-    var newDishRecipe by remember { mutableStateOf("") }
+    var mealList by remember { mutableStateOf(getFavMealListUseCase.execute()) }
+    var newMealName by remember { mutableStateOf("") }
+    var newMealRecipe by remember { mutableStateOf("") }
     var feedbackMessage by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Favorite Dishes") })
+            TopAppBar(title = { Text("Favorite Meals") })
         }
     ) { paddingValues ->
         Column(
@@ -59,18 +57,18 @@ fun FavDishScreen(
 
             // List of Dishes
             LazyColumn(modifier = Modifier.weight(1f)) {
-                items(dishList.size) { index ->
-                    val dish = dishList[index]
+                items(mealList.size) { index ->
+                    val meal = mealList[index]
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "${dish.name}: ${dish.recipe}")
+                        Text(text = "${meal.name}: ${meal.instructions}")
                         Button(onClick = {
-                            feedbackMessage = removeFavDishByIdUseCase.execute(dish.id)
-                            dishList = getFavDishListUseCase.execute()
+                            feedbackMessage = removeFavMealByIdUseCase.execute(meal.id)
+                            mealList = getFavMealListUseCase.execute()
                         }) {
                             Text("Remove")
                         }
@@ -81,30 +79,30 @@ fun FavDishScreen(
             // Add New Dish
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
-                    value = newDishName,
-                    onValueChange = { newDishName = it },
-                    label = { Text("Dish Name") },
+                    value = newMealName,
+                    onValueChange = { newMealName = it },
+                    label = { Text("Meal Name") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = newDishRecipe,
-                    onValueChange = { newDishRecipe = it },
-                    label = { Text("Dish Description") },
+                    value = newMealRecipe,
+                    onValueChange = { newMealRecipe = it },
+                    label = { Text("Meal Description") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Button(
                     onClick = {
-                        if (newDishName.isNotBlank() && newDishRecipe.isNotBlank()) {
-                            val newDish = Dish(
-                                id = Random.nextInt(1000, 9999),
-                                name = newDishName,
-                                recipe = newDishRecipe
-                            )
-                            addFavDishUseCase.execute(newDish)
-                            dishList = getFavDishListUseCase.execute()
+                        if (newMealName.isNotBlank() && newMealRecipe.isNotBlank()) {
+//                            val newDish = MealShort(
+//                                id = Random.nextInt(1000, 9999).toString(),
+//                                name = newMealName,
+//                                instructions = newMealRecipe
+//                            )
+//                            addFavMealUseCase.execute(newDish)
+                            mealList = getFavMealListUseCase.execute()
                             feedbackMessage = "Dish added successfully!"
-                            newDishName = ""
-                            newDishRecipe = ""
+                            newMealName = ""
+                            newMealRecipe = ""
                         } else {
                             feedbackMessage = "Please fill in both fields."
                         }

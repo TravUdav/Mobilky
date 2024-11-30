@@ -1,24 +1,27 @@
 package ru.mirea.andreevapk.ratatouille.ui.main
 
 import androidx.lifecycle.ViewModel
-import ru.mirea.andreevapk.data.mock.MockDishRepositoryImpl
-import ru.mirea.andreevapk.data.mock.MockFavDishRepositoryImpl
-import ru.mirea.andreevapk.domain.usecase.AddFavDishUseCase
-import ru.mirea.andreevapk.domain.usecase.GetDishListUseCase
-import ru.mirea.andreevapk.domain.usecase.GetFavDishListUseCase
-import ru.mirea.andreevapk.domain.usecase.GetRecommendDishListUseCase
-import ru.mirea.andreevapk.domain.usecase.RemoveFavDishByIdUseCase
-import ru.mirea.andreevapk.domain.usecase.UploadDishToDetectUseCase
+import ru.mirea.andreevapk.data.api.TheMealDbClient
+import ru.mirea.andreevapk.data.mock.MockFavMealRepositoryImpl
+import ru.mirea.andreevapk.data.repository.MealRepositoryImpl
+import ru.mirea.andreevapk.domain.usecase.AddFavMealUseCase
+import ru.mirea.andreevapk.domain.usecase.GetFavMealListUseCase
+import ru.mirea.andreevapk.domain.usecase.GetMealListUseCase
+import ru.mirea.andreevapk.domain.usecase.GetRecommendMealListUseCase
+import ru.mirea.andreevapk.domain.usecase.RemoveFavMealByIdUseCase
+import ru.mirea.andreevapk.domain.usecase.UploadMealToDetectUseCase
 
 class MainViewModel : ViewModel() {
 
-    private val favDishRepository = MockFavDishRepositoryImpl()
-    private val dishRepository = MockDishRepositoryImpl()
+    private val theMealDbApi = TheMealDbClient.api
+    private val mealRepository = MealRepositoryImpl(theMealDbApi)
 
-    val getDishListUseCase = GetDishListUseCase(dishRepository)
-    val getFavDishListUseCase = GetFavDishListUseCase(favDishRepository)
-    val addFavDishUseCase = AddFavDishUseCase(favDishRepository)
-    val removeFavDishByIdUseCase = RemoveFavDishByIdUseCase(favDishRepository)
-    val getRecommendDishListUseCase = GetRecommendDishListUseCase(dishRepository)
-    val uploadDishToDetectUseCase = UploadDishToDetectUseCase(dishRepository)
+    private val favMealRepository = MockFavMealRepositoryImpl()
+
+    val getMealListUseCase = GetMealListUseCase(mealRepository)
+    val getFavMealListUseCase = GetFavMealListUseCase(favMealRepository)
+    val addFavMealUseCase = AddFavMealUseCase(favMealRepository)
+    val removeFavMealByIdUseCase = RemoveFavMealByIdUseCase(favMealRepository)
+    val getRecommendMealListUseCase = GetRecommendMealListUseCase(mealRepository)
+    val uploadMealToDetectUseCase = UploadMealToDetectUseCase(mealRepository)
 }

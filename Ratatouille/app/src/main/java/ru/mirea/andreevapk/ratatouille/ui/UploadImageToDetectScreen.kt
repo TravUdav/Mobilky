@@ -13,17 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.mirea.andreevapk.domain.usecase.UploadDishToDetectUseCase
+import ru.mirea.andreevapk.domain.usecase.UploadMealToDetectUseCase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UploadImageToDetectScreen(
-    uploadDishToDetectUseCase: UploadDishToDetectUseCase
+    uploadMealToDetectUseCase: UploadMealToDetectUseCase
 ) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Upload Dish") })
+            TopAppBar(title = { Text("Upload Meal") })
         }
     ) { paddingValues ->
         Column(

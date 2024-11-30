@@ -67,7 +67,7 @@ fun MainTopBar(onMenuClick: () -> Unit) {
 fun DrawerContent(navController: NavHostController, onCloseDrawer: () -> Unit) {
     Column {
         DrawerButton(label = "Dish List") {
-            navController.navigate(Screen.DishListScreen.route)
+            navController.navigate(Screen.MealListScreen.route)
             onCloseDrawer()
         }
         DrawerButton(label = "Favorite Dishes") {
@@ -97,9 +97,9 @@ fun DrawerButton(label: String, onClick: () -> Unit) {
 }
 
 sealed class Screen(val route: String) {
-    object DishListScreen : Screen("dish_list")
+    object MealListScreen : Screen("meal_list")
     object UserProfileScreen : Screen("user_profile")
-    object FavDishScreen : Screen("fav_dish")
+    object FavDishScreen : Screen("fav_meal")
     object RecommendationsScreen : Screen("recommendations")
     object UploadImageToDetectScreen : Screen("upload_image_to_detect")
 }
