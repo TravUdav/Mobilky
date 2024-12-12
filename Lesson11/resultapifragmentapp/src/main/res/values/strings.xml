@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">ResultApiFragmentApp</string>
+    <string name="text">Some text</string>
+    <string name="button">Button</string>
+    <string name="result">Результат</string>
+</resources>

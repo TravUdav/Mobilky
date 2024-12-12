@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mirea.andreevapk.recyclerviewapp.Event
+import ru.mirea.andreevapk.recyclerviewapp.R
 
 @Composable
 fun EventItem(event: Event) {
@@ -51,4 +53,16 @@ fun EventItem(event: Event) {
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun previewItem(
+    event: Event = Event(
+        "Открытие Америки Христофором Колумбом",
+        "12 октября 1492 года Колумб, снарядив экспедицию, открыл Новый Свет для европейцев.",
+        R.drawable.columb
+    )
+) {
+    EventItem(event)
 }
