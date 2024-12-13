@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,8 @@ fun MealListContent(
     mealList: List<Meal>,
     onMealClick: (Meal) -> Unit,
     onFavClick: (Meal) -> Unit,
-    favorites: Set<String>
+    favorites: Set<String>,
+    listState: LazyListState
 ) {
     Column(
         modifier = Modifier
@@ -27,6 +29,7 @@ fun MealListContent(
     ) {
         LazyColumn(
             modifier = Modifier.weight(1f),
+            state = listState,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(mealList) { meal ->

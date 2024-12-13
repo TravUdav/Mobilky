@@ -1,6 +1,7 @@
 package ru.mirea.andreevapk.ratatouille.ui.meal
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,33 +12,27 @@ import ru.mirea.andreevapk.domain.model.Meal
 import ru.mirea.andreevapk.domain.usecase.GetMealListUseCase
 
 @Composable
-fun MealListScreen(getMealListUseCase: GetMealListUseCase) {
-    val mealListState = produceState<List<Meal>>(initialValue = emptyList()) {
-        value = getMealListUseCase.execute("A")
-    }
+fun MealListScreen(viewModel: MealListViewModel) {
+    val mealListState by viewModel.mealList
+    val favorites by viewModel.favorites
+    val selectedMeal by viewModel.selectedMeal
 
-    val mealList = mealListState.value
-    var selectedMeal by remember { mutableStateOf<Meal?>(null) }
-    val favorites = remember { mutableStateOf<Set<String>>(setOf()) }
+    val listState = rememberLazyListState()
 
     BackHandler(enabled = selectedMeal != null) {
-        selectedMeal = null
+        viewModel.deselectMeal()
     }
 
     fun onMealClick(meal: Meal) {
-        selectedMeal = meal
+        viewModel.selectMeal(meal)
     }
 
     fun onFavClick(meal: Meal) {
-        if (favorites.value.contains(meal.id)) {
-            favorites.value -= meal.id
-        } else {
-            favorites.value += meal.id
-        }
+        viewModel.toggleFavorite(meal)
     }
 
     fun onHomeClick() {
-        selectedMeal = null
+        viewModel.deselectMeal()
     }
 
     selectedMeal?.let {
@@ -45,14 +40,15 @@ fun MealListScreen(getMealListUseCase: GetMealListUseCase) {
             meal = it,
             onFavoriteClick = ::onFavClick,
             onHomeClick = ::onHomeClick,
-            isFavorite = favorites.value.contains(it.id)
+            isFavorite = favorites.contains(it.id)
         )
     } ?: run {
         MealListContent(
-            mealList = mealList,
+            mealList = mealListState,
             onMealClick = ::onMealClick,
             onFavClick = ::onFavClick,
-            favorites = favorites.value
+            favorites = favorites,
+            listState = listState
         )
     }
 }
