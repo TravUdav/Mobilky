@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_green"
+            android:icon="@android:drawable/presence_online"
+            android:title="Green" />
+
+        <item
+            android:id="@+id/navigation_orange"
+            android:icon="@android:drawable/presence_video_away"
+            android:title="Orange" />
+
+        <item
+            android:id="@+id/navigation_red"
+            android:icon="@android:drawable/presence_audio_busy"
+            android:title="Red" />
+    </group>
+</menu>
