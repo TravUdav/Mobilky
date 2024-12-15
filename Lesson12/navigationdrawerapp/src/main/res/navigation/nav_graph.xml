@@ -14,12 +14,12 @@
     <fragment
         android:id="@+id/navigation_orange"
         android:name="ru.mirea.andreevapk.navigationdrawerapp.draweritems.orange.OrangeFragment"
-        android:label="Партос"
+        android:label="Желтый"
         tools:layout="@layout/fragment_drawer_item" />
 
     <fragment
         android:id="@+id/navigation_red"
         android:name="ru.mirea.andreevapk.navigationdrawerapp.draweritems.red.RedFragment"
-        android:label="Арамис"
+        android:label="Красный"
         tools:layout="@layout/fragment_drawer_item" />
 </navigation>
